@@ -1,8 +1,7 @@
 import * as THREE from "three";
+import { Entity, GridPos } from "./entity";
 
-type GridPos = { x: number; z: number };
-
-export class Tree {
+export class Tree implements Entity {
   modelTop: THREE.Mesh;
   modelBottom: THREE.Mesh;
   gridPosition: GridPos;
@@ -25,5 +24,9 @@ export class Tree {
     this.modelBottom.position.set(x, y + 0.5, z);
 
     this.modelTop.scale.multiplyScalar(0.08);
+  }
+
+  addToScene(scene: THREE.Scene) {
+    scene.add(this.modelBottom, this.modelTop);
   }
 }

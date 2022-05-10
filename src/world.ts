@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { Vector3 } from "three";
-import { generateHeight } from "./voxel";
-import * as noise from "./noise.json";
+import { generateHeight } from "./voxel/voxel";
+import * as noise from "./voxel/noise.json";
 
 const cols = [0xf9ebc8, 0xfefbe7, 0xdae5d0, 0xa0bcc2];
 
@@ -44,7 +44,7 @@ export const addCubes = (
         color: chooseRandomCol(),
       });
       const cube = new THREE.Mesh(geometry, material);
-      cube.scale.multiply(new THREE.Vector3(0.95, 1, 0.95));
+      cube.scale.multiply(new THREE.Vector3(1, 1, 1));
 
       const y = getY(x, z);
 

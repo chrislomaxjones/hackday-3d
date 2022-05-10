@@ -1,32 +1,35 @@
 import * as THREE from "three";
+import { Entity, GridPos } from "./entity";
 import { Gubox } from "./gubox";
-
-type GridPos = { x: number; z: number };
+import { Tree } from "./tree";
 
 type World = [number, number, number][][];
 
 const increment = 0.075;
 let controlsEnabled = true;
 
-export class Player {
+const almostEqual = (a: number, b: number, delta = 0.01) =>
+  Math.abs(a - b) < delta;
+
+export class Player implements Entity {
   model: THREE.Mesh;
   camera: THREE.Camera;
   gridPosition: GridPos;
   world: World;
-  guboxes: Gubox[];
+  entities: Entity[];
 
   constructor(
     model: THREE.Mesh,
     camera: THREE.Camera,
     gridPosition: GridPos,
     world: World,
-    guboxes: Gubox[]
+    guboxes: Entity[]
   ) {
     this.model = model;
     this.camera = camera;
     this.gridPosition = gridPosition;
     this.world = world;
-    this.guboxes = guboxes;
+    this.entities = guboxes;
 
     // Set initial position
     this.model.position.set(this.gridPosition.x, 0.5, this.gridPosition.z);
@@ -82,8 +85,6 @@ export class Player {
   scaleDown = false;
 
   render() {
-    const almostEqual = (a: number, b: number) => Math.abs(a - b) < 0.01;
-
     if (almostEqual(this.model.scale.x, 1.1)) {
       this.scaleDown = true;
     } else if (almostEqual(this.model.scale.x, 0.95)) {
@@ -122,7 +123,6 @@ export class Player {
       this.camera.position.z = this.gridPosition.z + 5;
     }
 
-    // hmm
     const ty = this.world[this.gridPosition.x][this.gridPosition.z][1] + 0.5;
 
     if (!(Math.abs(this.model.position.y - ty) < increment)) {
@@ -143,25 +143,30 @@ export class Player {
       this.model.position.z === this.gridPosition.z &&
       this.model.position.y === ty
     ) {
-      // Set height according to world tile
-      // const [tx, ty, tz] = this.world[this.gridPosition.x][this.gridPosition.z];
-      // this.model.position.setY(ty + 0.5);
-      // this.camera.position.setY(ty + 2.5);
       controlsEnabled = true;
     }
   }
 
   updatePosition(newPos: GridPos) {
-    this.gridPosition = newPos;
-
-    const capturedGubox = this.guboxes.find(
-      (gubox) =>
-        gubox.gridPosition.x === this.gridPosition.x &&
-        gubox.gridPosition.z === this.gridPosition.z
+    const collidingEntity = this.entities.find(
+      (entity) =>
+        entity.gridPosition.x === newPos.x && entity.gridPosition.z === newPos.z
     );
 
-    if (capturedGubox) {
-      capturedGubox.capture();
+    if (collidingEntity instanceof Tree) {
+      // Can't move into a space occupied by a tree - do nothing
+      return;
     }
+
+    if (collidingEntity instanceof Gubox) {
+      // Capture a Gubox and proceed
+      collidingEntity.capture();
+    }
+
+    this.gridPosition = newPos;
+  }
+
+  addToScene(scene: THREE.Scene) {
+    scene.add(this.model);
   }
 }

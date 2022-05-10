@@ -1,10 +1,9 @@
 import * as THREE from "three";
-
-type GridPos = { x: number; z: number };
+import { Entity, GridPos } from "./entity";
 
 type State = "free" | "capturing" | "captured";
 
-export class Gubox<T = unknown> {
+export class Gubox<T = unknown> implements Entity {
   model: THREE.Mesh;
   state: State;
   gridPosition: GridPos;
@@ -51,5 +50,9 @@ export class Gubox<T = unknown> {
     if (this.model.scale.x < 0.001) {
       this.state = "captured";
     }
+  }
+
+  addToScene(scene: THREE.Scene) {
+    scene.add(this.model);
   }
 }

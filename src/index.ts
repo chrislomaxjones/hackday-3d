@@ -1,72 +1,64 @@
 import * as THREE from "three";
 import { Color, Vector3 } from "three";
-import { Gubox } from "./gubox";
-import { Lamp } from "./lamp";
-import { Player } from "./player";
-import { Tree } from "./tree";
+import { Entity } from "./entities/entity";
+import { Gubox } from "./entities/gubox";
+import { Lamp } from "./entities/lamp";
+import { Player } from "./entities/player";
+import { Tree } from "./entities/tree";
 import { addCubes } from "./world";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-// Setup scene and camera
+// Setup scene and renderer
 
 const scene = new THREE.Scene();
-
 scene.background = new Color(0x150036);
-
 const color = 0x150036;
 const density = 0.05;
 scene.fog = new THREE.FogExp2(color, density);
-
-// Setup renderer
-
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 document.body.appendChild(renderer.domElement);
 
-// Add a point light
-
-// const light = new THREE.PointLight(0xfffde0, 1, 100);
-// light.position.set(2, 5, 0);
-// scene.add(light);
-
 const light3 = new THREE.AmbientLight(0x404040, 0.5); // soft white light
 scene.add(light3);
 
-const world = addCubes(scene, /* 0.075 */ 0, new Vector3(-5, 0, -5));
+const world = addCubes(scene, 0, new Vector3(-5, 0, -5));
+
+const entities: Entity[] = [];
+
+const addEntity = (tx: number, ty: number, tz: number) => {
+  if (Math.random() < 0.01) {
+    console.log("Creating lamp at ", tx, ty, tz);
+    const lamp = new Lamp(tx, ty + 1.5, tz);
+    entities.push(lamp);
+    return;
+  }
+
+  if (Math.random() < 0.01) {
+    console.log("Creating Gubox at ", tx, ty, tz);
+    const gubox = new Gubox("https://gu.com", tx, ty + 1.25, tz);
+    entities.push(gubox);
+    return;
+  }
+
+  if (Math.random() < 0.05) {
+    console.log("Creating tree at ", tx, ty, tz);
+    const tree = new Tree(tx, ty, tz);
+    entities.push(tree);
+    return;
+  }
+};
 
 for (const row of world) {
   for (const [tx, ty, tz] of row) {
-    if (Math.random() < 0.01) {
-      console.log("Creating lamp at ", tx, ty, tz);
-      const lamp = new Lamp(tx, ty + 1.5, tz);
-      scene.add(lamp.model, lamp.light);
-    }
+    addEntity(tx, ty, tz);
   }
 }
 
-for (const row of world) {
-  for (const [tx, ty, tz] of row) {
-    if (Math.random() < 0.05) {
-      console.log("Creating tree at ", tx, ty, tz);
-      const tree = new Tree(tx, ty, tz);
-      scene.add(tree.modelTop, tree.modelBottom);
-    }
-  }
-}
-
-const guboxes: Gubox[] = [];
-
-for (const row of world) {
-  for (const [tx, ty, tz] of row) {
-    if (Math.random() < 0.01) {
-      console.log("Creating Gubox at ", tx, ty, tz);
-      const gubox = new Gubox("https://gu.com", tx, ty + 1.25, tz);
-      guboxes.push(gubox);
-      scene.add(gubox.model);
-    }
-  }
+// Add all entities to scene
+for (const entity of entities) {
+  entity.addToScene(scene);
 }
 
 const camera = new THREE.PerspectiveCamera(
@@ -84,16 +76,32 @@ const player = new Player(
   camera,
   { x: 0, z: 0 },
   world as [number, number, number][][],
-  guboxes
+  entities
 );
 
 scene.add(player.model);
+
+window.addEventListener(
+  "resize",
+  () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  },
+  false
+);
 
 function animate() {
   requestAnimationFrame(animate);
 
   player.render();
-  guboxes.forEach((gubox) => gubox.render());
+
+  for (const entity of entities) {
+    if (entity.render) {
+      entity.render();
+    }
+  }
 
   renderer.render(scene, camera);
 }

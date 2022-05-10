@@ -1,8 +1,7 @@
 import * as THREE from "three";
+import { Entity, GridPos } from "./entity";
 
-type GridPos = { x: number; z: number };
-
-export class Lamp {
+export class Lamp implements Entity {
   model: THREE.Mesh;
   light: THREE.Light;
   gridPosition: GridPos;
@@ -18,5 +17,9 @@ export class Lamp {
     this.gridPosition = { x, z };
     this.light.position.set(x, y + 4, z);
     this.model.position.set(x, y, z);
+  }
+
+  addToScene(scene: THREE.Scene) {
+    scene.add(this.model, this.light);
   }
 }

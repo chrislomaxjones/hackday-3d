@@ -26,8 +26,21 @@ export class Gubox<T = unknown> {
 
   capture() {
     this.state = "capturing";
-    // Here is where we display the URL
-    console.log(this.payload as unknown as string);
+
+    const prizeUrl = document.querySelector<HTMLAnchorElement>("#prize-url");
+    if (prizeUrl) {
+      prizeUrl.innerText = this.payload as unknown as string;
+    }
+    const prizeContainer =
+      document.querySelector<HTMLDivElement>("#prize-container");
+
+    prizeContainer?.classList.remove("hidden");
+    prizeContainer?.classList.add("bounceIn");
+
+    setTimeout(() => {
+      prizeContainer?.classList.remove("bounceIn");
+      prizeContainer?.classList.add("hidden");
+    }, 5_000);
   }
 
   render() {

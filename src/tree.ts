@@ -2,12 +2,6 @@ import * as THREE from "three";
 
 type GridPos = { x: number; z: number };
 
-// const points = [];
-// for (let i = 0; i < 10; i++) {
-//   points.push(new THREE.Vector2(Math.sqrt(i), Math.sqrt(i)));
-// }
-// const geometry = new THREE.LatheGeometry(points);
-
 export class Tree {
   modelTop: THREE.Mesh;
   modelBottom: THREE.Mesh;
@@ -31,6 +25,5 @@ export class Tree {
     this.modelBottom.position.set(x, y + 0.5, z);
 
     this.modelTop.scale.multiplyScalar(0.08);
-    // this.modelTop.position.y -= 0.064;
   }
 }

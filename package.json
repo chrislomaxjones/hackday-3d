@@ -1,0 +1,13 @@
+{
+  "name": "hackday-3d",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/three": "^0.140.0",
+    "parcel": "^2.5.0"
+  },
+  "dependencies": {
+    "three": "^0.140.2"
+  }
+}

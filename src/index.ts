@@ -30,7 +30,7 @@ scene.add(light);
 // const light3 = new THREE.AmbientLight(0x404040); // soft white light
 // scene.add(light3);
 
-addCubes(scene, 0.075, new Vector3(-5, 0, -5));
+addCubes(scene, /* 0.075 */ 0, new Vector3(-5, 0, -5));
 
 const camera = new THREE.PerspectiveCamera(
   75,

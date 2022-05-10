@@ -30,8 +30,8 @@ document.body.appendChild(renderer.domElement);
 // light.position.set(2, 5, 0);
 // scene.add(light);
 
-// const light3 = new THREE.AmbientLight(0x404040); // soft white light
-// scene.add(light3);
+const light3 = new THREE.AmbientLight(0x404040, 0.5); // soft white light
+scene.add(light3);
 
 const world = addCubes(scene, /* 0.075 */ 0, new Vector3(-5, 0, -5));
 
@@ -45,13 +45,14 @@ for (const row of world) {
   }
 }
 
-console.log("hello world!");
+const guboxes: Gubox[] = [];
 
 for (const row of world) {
   for (const [tx, ty, tz] of row) {
     if (Math.random() < 0.01) {
       console.log("Creating Gubox at ", tx, ty, tz);
-      const gubox = new Gubox(tx, ty + 1.25, tz);
+      const gubox = new Gubox("https://gu.com", tx, ty + 1.25, tz);
+      guboxes.push(gubox);
       scene.add(gubox.model);
     }
   }
@@ -67,11 +68,12 @@ const camera = new THREE.PerspectiveCamera(
 const player = new Player(
   new THREE.Mesh(
     new THREE.SphereGeometry(0.4),
-    new THREE.MeshLambertMaterial({ color: 0x97c4b8, reflectivity: 0 })
+    new THREE.MeshToonMaterial({ color: 0x97c4b8 })
   ),
   camera,
   { x: 0, z: 0 },
-  world as [number, number, number][][]
+  world as [number, number, number][][],
+  guboxes
 );
 
 scene.add(player.model);
@@ -80,6 +82,7 @@ function animate() {
   requestAnimationFrame(animate);
 
   player.render();
+  guboxes.forEach((gubox) => gubox.render());
 
   renderer.render(scene, camera);
 }

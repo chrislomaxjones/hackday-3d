@@ -4,7 +4,7 @@ type GridPos = { x: number; z: number };
 
 type World = [number, number, number][][];
 
-const increment = 0.1;
+const increment = 0.075;
 let controlsEnabled = true;
 
 export class Player {
@@ -35,12 +35,11 @@ export class Player {
 
   private setupControls() {
     document.onkeydown = (e) => {
-      console.log(controlsEnabled);
       if (controlsEnabled) {
         switch (e.key) {
           case "ArrowRight": {
             controlsEnabled = false;
-            console.log(controlsEnabled);
+
             this.updatePosition({
               x: this.gridPosition.x + 1,
               z: this.gridPosition.z,

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { Color, Vector3 } from "three";
+import { Gubox } from "./gubox";
 import { Lamp } from "./lamp";
 import { Player } from "./player";
 import { addCubes } from "./world";
@@ -40,6 +41,18 @@ for (const row of world) {
       console.log("Creating lamp at ", tx, ty, tz);
       const lamp = new Lamp(tx, ty + 1.5, tz);
       scene.add(lamp.model, lamp.light);
+    }
+  }
+}
+
+console.log("hello world!");
+
+for (const row of world) {
+  for (const [tx, ty, tz] of row) {
+    if (Math.random() < 0.01) {
+      console.log("Creating Gubox at ", tx, ty, tz);
+      const gubox = new Gubox(tx, ty + 1.25, tz);
+      scene.add(gubox.model);
     }
   }
 }

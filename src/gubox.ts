@@ -2,21 +2,18 @@ import * as THREE from "three";
 
 type GridPos = { x: number; z: number };
 
-export class Lamp {
+export class Gubox {
   model: THREE.Mesh;
-  light: THREE.Light;
+
   gridPosition: GridPos;
 
   constructor(x: number, y: number, z: number) {
     this.model = new THREE.Mesh(
-      new THREE.SphereGeometry(0.25),
-      new THREE.MeshBasicMaterial({ color: 0xffffff })
+      new THREE.BoxGeometry(1, 2),
+      new THREE.MeshToonMaterial({ color: 0x506991 })
     );
 
-    this.light = new THREE.PointLight(0xfffde0, 0.2, 30);
-
     this.gridPosition = { x, z };
-    this.light.position.set(x, y + 4, z);
     this.model.position.set(x, y, z);
   }
 }

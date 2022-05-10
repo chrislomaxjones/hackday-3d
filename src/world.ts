@@ -20,7 +20,6 @@ const heights = noise as number[];
 
 function getY(x: number, z: number) {
   const y = (heights[x + z * 50] * 0.3) | 0;
-  console.log(y / 2);
 
   if (y < -10) {
     return -10;
@@ -38,13 +37,11 @@ export const addCubes = (
   gap: number = 0,
   start: THREE.Vector3 = new Vector3()
 ) => {
-  console.log(heights);
   return cubesIndexes.map((row, x) =>
     row.map((z) => {
       const geometry = new THREE.BoxGeometry(1, 0.5);
-      const material = new THREE.MeshLambertMaterial({
+      const material = new THREE.MeshToonMaterial({
         color: chooseRandomCol(),
-        reflectivity: 0.1,
       });
       const cube = new THREE.Mesh(geometry, material);
       cube.scale.multiply(new THREE.Vector3(0.95, 1, 0.95));

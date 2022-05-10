@@ -109,7 +109,8 @@ export class Player {
     ) {
       // Set height according to world tile
       const [tx, ty, tz] = this.world[this.gridPosition.x][this.gridPosition.z];
-      this.model.position.setY(ty + 1);
+      this.model.position.setY(ty + 0.5);
+      // this.camera.position.setY(ty + 2.5);
 
       controlsEnabled = true;
     }

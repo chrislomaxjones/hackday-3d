@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Vector3 } from "three";
 import { generateHeight } from "./voxel";
+import * as noise from "./noise.json";
 
 const cols = [0xf9ebc8, 0xfefbe7, 0xdae5d0, 0xa0bcc2];
 
@@ -14,7 +15,8 @@ const cubesIndexes = upto(50).map((i) => {
   return upto(50);
 });
 
-const heights = generateHeight(50, 50);
+// const heights = generateHeight(50, 50);
+const heights = noise as number[];
 
 function getY(x: number, z: number) {
   const y = (heights[x + z * 50] * 0.3) | 0;

@@ -2,6 +2,8 @@ import * as THREE from "three";
 
 type GridPos = { x: number; z: number };
 
+type World = [number, number, number][][];
+
 const increment = 0.1;
 let controlsEnabled = true;
 
@@ -9,11 +11,18 @@ export class Player {
   model: THREE.Mesh;
   camera: THREE.Camera;
   gridPosition: GridPos;
+  world: World;
 
-  constructor(model: THREE.Mesh, camera: THREE.Camera, gridPosition: GridPos) {
+  constructor(
+    model: THREE.Mesh,
+    camera: THREE.Camera,
+    gridPosition: GridPos,
+    world: World
+  ) {
     this.model = model;
     this.camera = camera;
     this.gridPosition = gridPosition;
+    this.world = world;
 
     // Set initial position
     this.model.position.set(this.gridPosition.x, 0.5, this.gridPosition.z);
@@ -98,6 +107,10 @@ export class Player {
       this.model.position.x == this.gridPosition.x &&
       this.model.position.z === this.gridPosition.z
     ) {
+      // Set height according to world tile
+      const [tx, ty, tz] = this.world[this.gridPosition.x][this.gridPosition.z];
+      this.model.position.setY(ty + 1);
+
       controlsEnabled = true;
     }
   }

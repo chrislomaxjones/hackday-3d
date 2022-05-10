@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Color, Vector3 } from "three";
 import { Player } from "./player";
 import { addCubes } from "./world";
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 // Setup scene and camera
 
@@ -30,7 +31,7 @@ scene.add(light);
 // const light3 = new THREE.AmbientLight(0x404040); // soft white light
 // scene.add(light3);
 
-addCubes(scene, /* 0.075 */ 0, new Vector3(-5, 0, -5));
+const world = addCubes(scene, /* 0.075 */ 0, new Vector3(-5, 0, -5));
 
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -45,7 +46,8 @@ const player = new Player(
     new THREE.MeshLambertMaterial({ color: 0x97c4b8 })
   ),
   camera,
-  { x: 0, z: 0 }
+  { x: 0, z: 0 },
+  world as [number, number, number][][]
 );
 
 scene.add(player.model);

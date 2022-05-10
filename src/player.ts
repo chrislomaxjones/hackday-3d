@@ -79,7 +79,23 @@ export class Player {
     };
   }
 
+  scaleDown = false;
+
   render() {
+    const almostEqual = (a: number, b: number) => Math.abs(a - b) < 0.01;
+
+    if (almostEqual(this.model.scale.x, 1.1)) {
+      this.scaleDown = true;
+    } else if (almostEqual(this.model.scale.x, 0.95)) {
+      this.scaleDown = false;
+    }
+
+    if (this.scaleDown) {
+      this.model.scale.multiplyScalar(0.99);
+    } else {
+      this.model.scale.multiplyScalar(1.01);
+    }
+
     if (!(Math.abs(this.model.position.x - this.gridPosition.x) < increment)) {
       if (this.model.position.x > this.gridPosition.x) {
         this.model.position.x -= increment;
@@ -108,13 +124,14 @@ export class Player {
 
     // hmm
     const ty = this.world[this.gridPosition.x][this.gridPosition.z][1] + 0.5;
+
     if (!(Math.abs(this.model.position.y - ty) < increment)) {
       if (this.model.position.y > ty) {
-        this.model.position.y -= increment;
-        this.camera.position.y -= increment;
+        this.model.position.y -= 0.5 * increment;
+        this.camera.position.y -= 0.5 * increment;
       } else {
-        this.model.position.y += increment;
-        this.camera.position.y += increment;
+        this.model.position.y += 0.5 * increment;
+        this.camera.position.y += 0.5 * increment;
       }
     } else {
       this.model.position.y = ty;
@@ -123,7 +140,8 @@ export class Player {
 
     if (
       this.model.position.x == this.gridPosition.x &&
-      this.model.position.z === this.gridPosition.z
+      this.model.position.z === this.gridPosition.z &&
+      this.model.position.y === ty
     ) {
       // Set height according to world tile
       // const [tx, ty, tz] = this.world[this.gridPosition.x][this.gridPosition.z];

@@ -3,6 +3,7 @@ import { Color, Vector3 } from "three";
 import { Gubox } from "./gubox";
 import { Lamp } from "./lamp";
 import { Player } from "./player";
+import { Tree } from "./tree";
 import { addCubes } from "./world";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
@@ -41,6 +42,16 @@ for (const row of world) {
       console.log("Creating lamp at ", tx, ty, tz);
       const lamp = new Lamp(tx, ty + 1.5, tz);
       scene.add(lamp.model, lamp.light);
+    }
+  }
+}
+
+for (const row of world) {
+  for (const [tx, ty, tz] of row) {
+    if (Math.random() < 0.05) {
+      console.log("Creating tree at ", tx, ty, tz);
+      const tree = new Tree(tx, ty, tz);
+      scene.add(tree.modelTop, tree.modelBottom);
     }
   }
 }

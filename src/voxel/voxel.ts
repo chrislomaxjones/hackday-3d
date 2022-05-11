@@ -1,3 +1,5 @@
+// From https://github.com/mrdoob/three.js/blob/master/examples/webgl_geometry_terrain_raycast.html#L136-L158
+
 import { ImprovedNoise } from "./noise";
 
 export function generateHeight(width: number, height: number) {

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Entity, GridPos } from "./entity";
 import { Gubox } from "./gubox";
+import { NPC } from "./npc";
 import { Tree } from "./tree";
 
 type World = [number, number, number][][];
@@ -199,8 +200,8 @@ export class Player implements Entity {
         entity.gridPosition.x === newPos.x && entity.gridPosition.z === newPos.z
     );
 
-    if (collidingEntity instanceof Tree) {
-      // Can't move into a space occupied by a tree - do nothing
+    if (collidingEntity instanceof Tree || collidingEntity instanceof NPC) {
+      // Can't move into a space occupied by a tree or NPC - do nothing
       return;
     }
 

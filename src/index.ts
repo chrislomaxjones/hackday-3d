@@ -4,6 +4,7 @@ import { Entity } from "./entities/entity";
 import { Gubox } from "./entities/gubox";
 import { Lamp } from "./entities/lamp";
 import { Moon } from "./entities/moon";
+import { NPC } from "./entities/npc";
 import { Player } from "./entities/player";
 import { Tree } from "./entities/tree";
 import { onPrizeWon, prizes } from "./prizes";
@@ -25,11 +26,31 @@ document.body.appendChild(renderer.domElement);
 // const light3 = new THREE.AmbientLight(0x404040, 1); // soft white light
 // scene.add(light3);
 
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
 const world = addCubes(scene, 0, new Vector3(0, 0, 0));
 
 const entities: Entity[] = [];
 
 const lamps: Lamp[] = [];
+
+const player = new Player(
+  new THREE.Mesh(
+    new THREE.SphereGeometry(0.4),
+    new THREE.MeshToonMaterial({ color: 0x97c4b8 })
+  ),
+  camera,
+  { x: 0, z: 0 },
+  world as [number, number, number][][],
+  entities
+);
+
+scene.add(player.model);
 
 const addEntity = (tx: number, ty: number, tz: number) => {
   if (
@@ -60,6 +81,20 @@ const addEntity = (tx: number, ty: number, tz: number) => {
     entities.push(tree);
     return;
   }
+
+  if (Math.random() < 0.015) {
+    console.log("Creating NPC at ", tx, ty, tz);
+    const tree = new NPC(
+      tx,
+      ty,
+      tz,
+      entities,
+      world as [number, number, number][][],
+      player
+    );
+    entities.push(tree);
+    return;
+  }
 };
 
 for (const row of world) {
@@ -72,26 +107,6 @@ for (const row of world) {
 for (const entity of entities) {
   entity.addToScene(scene);
 }
-
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
-
-const player = new Player(
-  new THREE.Mesh(
-    new THREE.SphereGeometry(0.4),
-    new THREE.MeshToonMaterial({ color: 0x97c4b8 })
-  ),
-  camera,
-  { x: 0, z: 0 },
-  world as [number, number, number][][],
-  entities
-);
-
-scene.add(player.model);
 
 const moon = new Moon(20, 15, -30);
 moon.addToScene(scene);

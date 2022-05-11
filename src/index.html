@@ -34,22 +34,41 @@
         }
       }
 
+      @keyframes hide {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      iframe {
+        border-radius: 12px;
+      }
+
       #prize-container {
         position: absolute;
         z-index: 1;
         background-color: #f1f1f1;
-        border-radius: 24px;
-        padding: 1em;
-        width: 120px;
-        bottom: 20%;
-        left: 50%;
-        right: 50%;
+        border-radius: 12px;
+        padding: 0.5em;
+        width: 170px;
+        bottom: 10%;
+        left: 10%;
         text-align: center;
-        box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.2);
       }
 
       .hidden {
         visibility: hidden;
+        animation-name: hide;
+        -webkit-animation-name: hide;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+        animation-duration: 1s;
+        -webkit-animation-duration: 1s;
+        animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
       }
 
       .bounceIn {
@@ -67,10 +86,11 @@
   <body>
     <script type="module" src="./index.ts"></script>
     <div class="hidden" id="prize-container">
-      <b
-        >Discovered <br />
-        <a href="#" target="”_blank”" id="prize-url">https://goo</a>
-      </b>
+      <iframe
+        style="border: 0; width: 170px; height: 170px"
+        src="https://bandcamp.com/EmbeddedPlayer/album=1609625145/size=large/bgcol=333333/linkcol=0f91ff/minimal=true/transparent=true/"
+        seamless
+      ></iframe>
     </div>
   </body>
 </html>

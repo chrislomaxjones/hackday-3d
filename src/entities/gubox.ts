@@ -1,16 +1,25 @@
 import * as THREE from "three";
+import { onPrizeWon } from "../prizes";
 import { Entity, GridPos } from "./entity";
 
 type State = "free" | "capturing" | "captured";
 
-export class Gubox<T = unknown> implements Entity {
+let guboxId = 0;
+
+const getNewId = () => {
+  const id = guboxId;
+  guboxId += 1;
+  return id;
+};
+
+export class Gubox implements Entity {
+  id: number;
   model: THREE.Mesh;
   state: State;
   gridPosition: GridPos;
-  payload;
 
-  constructor(payload: T, x: number, y: number, z: number) {
-    this.payload = payload;
+  constructor(x: number, y: number, z: number) {
+    this.id = getNewId();
 
     this.model = new THREE.Mesh(
       new THREE.BoxGeometry(1, 2),
@@ -25,21 +34,7 @@ export class Gubox<T = unknown> implements Entity {
 
   capture() {
     this.state = "capturing";
-
-    const prizeUrl = document.querySelector<HTMLAnchorElement>("#prize-url");
-    if (prizeUrl) {
-      prizeUrl.innerText = this.payload as unknown as string;
-    }
-    const prizeContainer =
-      document.querySelector<HTMLDivElement>("#prize-container");
-
-    prizeContainer?.classList.remove("hidden");
-    prizeContainer?.classList.add("bounceIn");
-
-    setTimeout(() => {
-      prizeContainer?.classList.remove("bounceIn");
-      prizeContainer?.classList.add("hidden");
-    }, 5_000);
+    onPrizeWon(this.id);
   }
 
   render() {

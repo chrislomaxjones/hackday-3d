@@ -5,6 +5,7 @@ import { Gubox } from "./entities/gubox";
 import { Lamp } from "./entities/lamp";
 import { Player } from "./entities/player";
 import { Tree } from "./entities/tree";
+import { onPrizeWon, prizes } from "./prizes";
 import { addCubes } from "./world";
 
 // Setup scene and renderer
@@ -37,7 +38,7 @@ const addEntity = (tx: number, ty: number, tz: number) => {
 
   if (Math.random() < 0.01) {
     console.log("Creating Gubox at ", tx, ty, tz);
-    const gubox = new Gubox("https://gu.com", tx, ty + 1.25, tz);
+    const gubox = new Gubox(tx, ty + 1.25, tz);
     entities.push(gubox);
     return;
   }

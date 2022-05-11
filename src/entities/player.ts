@@ -41,6 +41,47 @@ export class Player implements Entity {
   }
 
   private setupControls() {
+    document.ontouchend = (e) => {
+      const { clientX, clientY } = e.changedTouches[0];
+      const [w, h] = [window.innerWidth / 2, window.innerHeight / 2];
+
+      console.log({ clientX, clientY, w, h });
+
+      if (controlsEnabled) {
+        if (clientY <= h / 2) {
+          controlsEnabled = false;
+          this.updatePosition({
+            x: this.gridPosition.x,
+            z: this.gridPosition.z - 1,
+          });
+          return;
+        } else if (clientY > h / 2 && clientY < (3 * h) / 2) {
+          if (clientX > w) {
+            controlsEnabled = false;
+            this.updatePosition({
+              x: this.gridPosition.x + 1,
+              z: this.gridPosition.z,
+            });
+            return;
+          } else if (clientX <= w) {
+            controlsEnabled = false;
+            this.updatePosition({
+              x: this.gridPosition.x - 1,
+              z: this.gridPosition.z,
+            });
+            return;
+          }
+        } else if (clientY >= (3 * h) / 2) {
+          controlsEnabled = false;
+          this.updatePosition({
+            x: this.gridPosition.x,
+            z: this.gridPosition.z + 1,
+          });
+          return;
+        }
+      }
+    };
+
     document.onkeydown = (e) => {
       if (controlsEnabled) {
         switch (e.key) {

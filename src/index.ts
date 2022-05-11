@@ -68,6 +68,7 @@ const addEntity = (tx: number, ty: number, tz: number) => {
     const lamp = new Lamp(tx, ty + 1.5, tz);
     entities.push(lamp);
     lamps.push(lamp);
+    return;
   }
 
   if (Math.random() < 0.01) {

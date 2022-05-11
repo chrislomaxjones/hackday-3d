@@ -39,7 +39,7 @@ export const addCubes = (
 ) => {
   return cubesIndexes.map((row, x) =>
     row.map((z) => {
-      const geometry = new THREE.BoxGeometry(1, 0.5);
+      const geometry = new THREE.BoxGeometry(1, 1);
       const material = new THREE.MeshToonMaterial({
         color: chooseRandomCol(),
       });

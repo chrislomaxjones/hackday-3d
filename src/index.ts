@@ -3,6 +3,7 @@ import { Color, Vector3 } from "three";
 import { Entity } from "./entities/entity";
 import { Gubox } from "./entities/gubox";
 import { Lamp } from "./entities/lamp";
+import { Moon } from "./entities/moon";
 import { Player } from "./entities/player";
 import { Tree } from "./entities/tree";
 import { onPrizeWon, prizes } from "./prizes";
@@ -21,18 +22,28 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 document.body.appendChild(renderer.domElement);
 
-const light3 = new THREE.AmbientLight(0x404040, 0.5); // soft white light
-scene.add(light3);
+// const light3 = new THREE.AmbientLight(0x404040, 1); // soft white light
+// scene.add(light3);
 
-const world = addCubes(scene, 0, new Vector3(-5, 0, -5));
+const world = addCubes(scene, 0, new Vector3(0, 0, 0));
 
 const entities: Entity[] = [];
 
+const lamps: Lamp[] = [];
+
 const addEntity = (tx: number, ty: number, tz: number) => {
-  if (Math.random() < 0.01) {
+  if (
+    Math.random() < 0.01 // &&
+    // !lamps.some(
+    //   (l) =>
+    //     Math.abs(l.gridPosition.x - tx) >= 10 &&
+    //     Math.abs(l.gridPosition.z - tz) >= 10
+    // )
+  ) {
     console.log("Creating lamp at ", tx, ty, tz);
     const lamp = new Lamp(tx, ty + 1.5, tz);
     entities.push(lamp);
+    lamps.push(lamp);
     return;
   }
 
@@ -82,6 +93,9 @@ const player = new Player(
 
 scene.add(player.model);
 
+const moon = new Moon(20, 15, -30);
+moon.addToScene(scene);
+
 window.addEventListener(
   "resize",
   () => {
@@ -97,6 +111,8 @@ function animate() {
   requestAnimationFrame(animate);
 
   player.render();
+
+  moon.render();
 
   for (const entity of entities) {
     if (entity.render) {

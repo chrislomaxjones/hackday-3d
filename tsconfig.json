@@ -11,7 +11,8 @@
     "listFiles": true,
     "newLine": "LF",
     "noEmitOnError": true,
-    "strict": true
+    "strict": true,
+    "resolveJsonModule": true
   },
   "filesGlob": [
     "./**/*.ts",

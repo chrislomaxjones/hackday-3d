@@ -123,7 +123,7 @@ export class Player implements Entity {
       this.camera.position.z = this.gridPosition.z + 5;
     }
 
-    const ty = this.world[this.gridPosition.x][this.gridPosition.z][1] + 0.5;
+    const ty = this.world[this.gridPosition.x][this.gridPosition.z][1] + 1;
 
     if (!(Math.abs(this.model.position.y - ty) < increment)) {
       if (this.model.position.y > ty) {
@@ -148,6 +148,11 @@ export class Player implements Entity {
   }
 
   updatePosition(newPos: GridPos) {
+    // Don't fall off edge...
+    if (newPos.x < 0 || newPos.z < 0 || newPos.x > 49 || newPos.z > 49) {
+      return;
+    }
+
     const collidingEntity = this.entities.find(
       (entity) =>
         entity.gridPosition.x === newPos.x && entity.gridPosition.z === newPos.z

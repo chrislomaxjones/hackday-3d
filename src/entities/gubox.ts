@@ -22,19 +22,22 @@ export class Gubox implements Entity {
     this.id = getNewId();
 
     this.model = new THREE.Mesh(
-      new THREE.BoxGeometry(1, 2),
+      new THREE.BoxGeometry(1, 2.5),
       new THREE.MeshToonMaterial({ color: 0x506991 })
     );
 
     this.gridPosition = { x, z };
     this.model.position.set(x, y, z);
+    this.model.scale.multiply(new THREE.Vector3(0.8, 1, 0.8));
 
     this.state = "free";
   }
 
   capture() {
-    this.state = "capturing";
-    onPrizeWon(this.id);
+    if (this.state !== "captured") {
+      this.state = "capturing";
+      onPrizeWon(this.id);
+    }
   }
 
   render() {

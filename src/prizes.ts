@@ -18,11 +18,27 @@ export const prizes: Prize[] = [
   { albumId: "703424226" },
 ];
 
+let prizeCount = 0;
+
 export const onPrizeWon = (prizeId: number) => {
+  prizeCount += 1;
   const prize = prizes[prizeId % prizes.length] || prizes[0];
+
   console.log("Issuing prize", prize);
 
   const { albumId } = prize;
+
+  // Update score card
+  const score = document.querySelector<HTMLDivElement>(".score");
+
+  if (score?.classList.contains("hidden")) {
+    score.classList.remove("hidden");
+    score.classList.add("bounceIn");
+  }
+
+  if (score) {
+    score.innerText = String(prizeCount);
+  }
 
   // Write the album id to the iframe src
   const embedIframe = document.querySelector<HTMLIFrameElement>("iframe");

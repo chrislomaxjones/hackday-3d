@@ -71,10 +71,10 @@ export class NPC implements Entity {
         z: this.gridPosition.z + dir,
       });
     }
-    // Move again in a random time
+    // Move again in a random time between 1s and 2.5s
     setTimeout(() => {
       this.move();
-    }, Math.random() * 1_000 + 5_00);
+    }, Math.random() * 2_000 + 5_00);
   }
 
   updatePosition(newPos: GridPos) {

@@ -53,19 +53,11 @@ const player = new Player(
 scene.add(player.model);
 
 const addEntity = (tx: number, ty: number, tz: number) => {
-  if (
-    Math.random() < 0.01 // &&
-    // !lamps.some(
-    //   (l) =>
-    //     Math.abs(l.gridPosition.x - tx) >= 10 &&
-    //     Math.abs(l.gridPosition.z - tz) >= 10
-    // )
-  ) {
+  if (tx % 10 === 0 && tz % 10 === 0) {
     console.log("Creating lamp at ", tx, ty, tz);
     const lamp = new Lamp(tx, ty + 1.5, tz);
     entities.push(lamp);
     lamps.push(lamp);
-    return;
   }
 
   if (Math.random() < 0.01) {

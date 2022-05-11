@@ -18,7 +18,7 @@ export class Moon {
     this.light = new THREE.DirectionalLight(0xffffff, 0.1);
 
     this.light.position.set(x, y + 20, z + 20);
-    this.light.rotateX(1.5);
+    this.light.rotateX(-1.5);
 
     this.model.position.set(x, y, z);
     this.ring.position.set(x, y, z);

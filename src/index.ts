@@ -38,13 +38,19 @@ const entities: Entity[] = [];
 
 const lamps: Lamp[] = [];
 
+// Random start within first 10x10 area
+const playerPosition = {
+  x: Math.round(Math.random() * 10),
+  z: Math.round(Math.random() * 10),
+};
+
 const player = new Player(
   new THREE.Mesh(
     new THREE.SphereGeometry(0.4),
     new THREE.MeshToonMaterial({ color: 0x97c4b8 })
   ),
   camera,
-  { x: 0, z: 0 },
+  playerPosition,
   world as [number, number, number][][],
   entities
 );
@@ -52,6 +58,11 @@ const player = new Player(
 scene.add(player.model);
 
 const addEntity = (tx: number, ty: number, tz: number) => {
+  // Don't place anything on top of the player
+  if (tx === playerPosition.x && tz === playerPosition.z) {
+    return;
+  }
+
   if (tx % 10 === 0 && tz % 10 === 0) {
     console.log("Creating lamp at ", tx, ty, tz);
     const lamp = new Lamp(tx, ty + 1.5, tz);

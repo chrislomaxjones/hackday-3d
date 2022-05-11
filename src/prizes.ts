@@ -6,23 +6,18 @@ export const prizes: Prize[] = [
   { albumId: "1609625145" },
   { albumId: "1597284220" },
   { albumId: "703424226" },
-  // Duped...
-  { albumId: "1609625145" },
-  { albumId: "1597284220" },
-  { albumId: "703424226" },
-  { albumId: "1609625145" },
-  { albumId: "1597284220" },
-  { albumId: "703424226" },
-  { albumId: "1609625145" },
-  { albumId: "1597284220" },
-  { albumId: "703424226" },
+  { albumId: "3479694282" },
+  { albumId: "2603255318" },
+  { albumId: "542247107" },
+  { albumId: "2565917559" },
+  { albumId: "432543562" },
 ];
 
 let prizeCount = 0;
 
-export const onPrizeWon = (prizeId: number) => {
+export const onPrizeWon = () => {
+  const prize = prizes[prizeCount % prizes.length] || prizes[0];
   prizeCount += 1;
-  const prize = prizes[prizeId % prizes.length] || prizes[0];
 
   console.log("Issuing prize", prize);
 

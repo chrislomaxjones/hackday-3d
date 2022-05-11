@@ -7,7 +7,6 @@ import { Moon } from "./entities/moon";
 import { NPC } from "./entities/npc";
 import { Player } from "./entities/player";
 import { Tree } from "./entities/tree";
-import { onPrizeWon, prizes } from "./prizes";
 import { addCubes } from "./world";
 
 // Setup scene and renderer

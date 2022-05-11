@@ -4,23 +4,12 @@ import { Entity, GridPos } from "./entity";
 
 type State = "free" | "capturing" | "captured";
 
-let guboxId = 0;
-
-const getNewId = () => {
-  const id = guboxId;
-  guboxId += 1;
-  return id;
-};
-
 export class Gubox implements Entity {
-  id: number;
   model: THREE.Mesh;
   state: State;
   gridPosition: GridPos;
 
   constructor(x: number, y: number, z: number) {
-    this.id = getNewId();
-
     this.model = new THREE.Mesh(
       new THREE.BoxGeometry(1, 2.5),
       new THREE.MeshToonMaterial({ color: 0x506991 })
@@ -36,7 +25,7 @@ export class Gubox implements Entity {
   capture() {
     if (this.state !== "captured") {
       this.state = "capturing";
-      onPrizeWon(this.id);
+      onPrizeWon();
     }
   }
 
